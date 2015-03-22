@@ -164,24 +164,25 @@ public class MainActivity extends Activity {
         private final BroadcastReceiver receiver = new BroadcastReceiver(){
             @Override
             public void onReceive(Context context, Intent intent) {
+                try {
+                    String action = intent.getAction();
+                    if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                        double rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                        String name = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
 
-                String action = intent.getAction();
-                if(BluetoothDevice.ACTION_FOUND.equals(action)) {
-                    double rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-                    String name = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
 
-
-                        for(Dispositivo b:bacons){
-                            if( name.equals(b.getNombre())){
+                        for (Dispositivo b : bacons) {
+                            if (name.equals(b.getNombre())) {
                                 b.setRssi(rssi);
-                                adapter.add( new Dispositivo (name,rssi));
+                                adapter.add(new Dispositivo(name, rssi));
                             }
 
+                        }
+
+                        Log.d(TAG, name + " " + rssi);
+
                     }
-
-                    Log.d(TAG,name+" "+rssi);
-
-                }
+                } catch (Exception e){};
 
             }
         };
