@@ -4,5 +4,10 @@
     <string name="app_name">PruebaSenal</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="buscar">Buscar</string>
+    <string name="triangular">Triangular</string>
+    <string name="error">Error</string>
+    <string name="lista_vacia">No encontrados dispositivos Bluetooth</string>
 
 </resources>

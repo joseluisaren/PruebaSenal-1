@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class VentanaPrincipal extends Activity {
@@ -46,6 +47,8 @@ public class VentanaPrincipal extends Activity {
                 String name = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
                 rssi_msg.setText(rssi_msg.getText() + name + " => " + rssi + "dBm\n");
             }
+            else
+                Toast.makeText(VentanaPrincipal.this,"No hay dispositivos",Toast.LENGTH_LONG).show();
         }
     };
 
