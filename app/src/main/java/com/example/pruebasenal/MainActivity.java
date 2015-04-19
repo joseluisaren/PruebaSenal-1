@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -50,8 +51,9 @@ public class MainActivity extends Activity {
 
         private BluetoothAdapter bTAdapter ;
 
-        private ArrayAdapter<Dispositivo> adapter;
-        private ArrayList<Dispositivo> dispositivos;
+        private ArrayAdapter<String> adapter;
+        private ArrayList<String> mDispositivos;
+        private ArrayList<Double> mRssis;
         private ArrayList<Dispositivo> bacons;
 
 
@@ -63,6 +65,7 @@ public class MainActivity extends Activity {
             super.onActivityCreated(savedInstanceState);
             // habilita el multicheck
             getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
         }
 
         @Override
@@ -70,35 +73,27 @@ public class MainActivity extends Activity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            bTAdapter = BluetoothAdapter.getDefaultAdapter();
-
-
             // Si empiezo una búsqueda de dispositivos bluetooth, estoy interesado
             getActivity().registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
 
+            bTAdapter = BluetoothAdapter.getDefaultAdapter();
 
-            // lista vacia de dispositivos
-            dispositivos = new ArrayList<>();
+            iniciarBacons();
 
-            // lista de bacons
-            bacons = new ArrayList<>();
-
-            bacons.add(new Dispositivo("ZTE TARA 3G",-51,40.416775400000000000,-3.703790199999957600));
-            bacons.add(new Dispositivo("BACON 2",-52,40.416775400000000000,-3.703790199999957600));
-            bacons.add(new Dispositivo("BACON 3",-53,40.416775400000000000,-3.703790199999957600));
-
-
-            // adaptador que hace de controlador para una lista de tipo check
-            adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_checked,dispositivos);
-
-            setListAdapter(adapter);
-
+            // activo el menu del fragmento
             setHasOptionsMenu(true);
-
 
             return rootView;
         }
 
+        private void iniciarBacons() {
+            // lista de bacons
+            bacons = new ArrayList<>();
+
+            bacons.add(new Dispositivo("ZTE TARA 3G",-51,40.416775400000000000,-3.703790199999957600));
+            bacons.add(new Dispositivo("Bacon 1",-52,40.416775400000000000,-3.703790199999957600));
+            bacons.add(new Dispositivo("Aquaris E5",-53,40.416775400000000000,-3.703790199999957600));
+        }
 
 
         @Override
@@ -114,8 +109,9 @@ public class MainActivity extends Activity {
             //noinspection SimplifiableIfStatement
             int id = item.getItemId();
             if (id == R.id.buscar) {
+                     iniciarAdaptador();
                     // buscando dispositivos bluetooth
-                    bTAdapter.startDiscovery();
+                      bTAdapter.startDiscovery();
                 return true;
             }
             if (id == R.id.triangular) {
@@ -157,35 +153,61 @@ public class MainActivity extends Activity {
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             super.onListItemClick(l, v, position, id);
-
+            Toast.makeText(getActivity(),mDispositivos.get(position)+" -> "+mRssis.get(position)+" dBm",Toast.LENGTH_LONG).show();
 
         }
+
+
 
         private final BroadcastReceiver receiver = new BroadcastReceiver(){
             @Override
             public void onReceive(Context context, Intent intent) {
-                try {
+
                     String action = intent.getAction();
                     if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                        double rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        String name = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
+                        try {
+                            double rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                            String name = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
 
-
-                        for (Dispositivo b : bacons) {
-                            if (name.equals(b.getNombre())) {
-                                b.setRssi(rssi);
-                                adapter.add(new Dispositivo(name, rssi));
+                            if (!mDispositivos.contains(name)) {
+                                adapter.add(name);
+                                mRssis.add(rssi);
                             }
+
+
+                            for (Dispositivo b : bacons) {
+                                if (name.equals(b.getNombre())) {
+                                    b.setRssi(rssi);
+                                    getListView().setItemChecked(mDispositivos.indexOf(name), true);
+
+                                }
+
+                            }
+
+                            Log.d(TAG, name + " " + rssi);
+                        } catch(Exception e){
+                            Log.e(TAG, "Excepción en BroadcastReceiver ",e);
 
                         }
 
-                        Log.d(TAG, name + " " + rssi);
-
                     }
-                } catch (Exception e){};
+
 
             }
         };
+
+        private void iniciarAdaptador() {
+            // lista vacia de dispositivos
+            mDispositivos = new ArrayList<>();
+            mRssis = new ArrayList<>();
+
+            // adaptador que hace de controlador para una lista de tipo check
+            adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_checked,mDispositivos);
+
+            setListAdapter(adapter);
+
+        }
+
 
 
     }
