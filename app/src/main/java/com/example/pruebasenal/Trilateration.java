@@ -73,13 +73,13 @@ package com.example.pruebasenal;
         {
             double dist1, dist2, dist3;
             double MyLat, MyLong;
-            //dist1 = calDistToDeg(calcDistance(d1.getRssi()));
-            //dist2 = calDistToDeg(calcDistance(d2.getRssi()));
-           // dist3 = calDistToDeg(calcDistance(d3.getRssi()));
+            dist1 = calDistToDeg(calcDistance(d1.getRssi()));
+            dist2 = calDistToDeg(calcDistance(d2.getRssi()));
+            dist3 = calDistToDeg(calcDistance(d3.getRssi()));
 
-            dist1 = calDistToDeg(10);      //calDistToDeg(calcDistance(rssi1));
-            dist2 = calDistToDeg(12);      //calDistToDeg(calcDistance(rssi2));
-            dist3 = calDistToDeg(8);       //calDistToDeg(calcDistance(rssi3));
+          //  dist1 = calDistToDeg(10);      //calDistToDeg(calcDistance(rssi1));
+           // dist2 = calDistToDeg(12);      //calDistToDeg(calcDistance(rssi2));
+           // dist3 = calDistToDeg(8);       //calDistToDeg(calcDistance(rssi3));
 
             MyLong = (2*(d3.getLatitud()-d1.getLatitud())*(Math.pow(dist2,2)-Math.pow(dist1,2))
                     -2*(d2.getLatitud()-d1.getLatitud())*(Math.pow(dist3,2)-Math.pow(dist1,2)))

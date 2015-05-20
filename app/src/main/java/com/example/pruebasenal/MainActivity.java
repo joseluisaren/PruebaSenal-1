@@ -90,9 +90,9 @@ public class MainActivity extends Activity {
             // lista de bacons
             bacons = new ArrayList<>();
 
-            bacons.add(new Dispositivo("ZTE TARA 3G",-51,40.416775400000000000,-3.703790199999957600));
-            bacons.add(new Dispositivo("Bacon 1",-52,40.416775400000000000,-3.703790199999957600));
-            bacons.add(new Dispositivo("Aquaris E5",-53,40.416775400000000000,-3.703790199999957600));
+            bacons.add(new Dispositivo("ZTE TARA 3G",-51,40.4083478, -3.693147));
+            bacons.add(new Dispositivo("Bacon 1",-52,40.4092795,-3.693025));
+            bacons.add(new Dispositivo("Aquaris E5",-53,40.4092795,-3.693025));
         }
 
 

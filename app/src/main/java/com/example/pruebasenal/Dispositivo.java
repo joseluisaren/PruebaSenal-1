@@ -17,6 +17,8 @@ public class Dispositivo implements Serializable {
     public Dispositivo(String nombre, double rssi, double latitud, double longitud) {
         this.nombre = nombre;
         this.rssi = rssi;
+        this.latitud=latitud;
+        this.longitud=longitud;
     }
 
 
@@ -28,12 +30,12 @@ public class Dispositivo implements Serializable {
         return nombre;
     }
 
-    public double getRssi() {
-        return rssi;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public double getRssi() {
+        return rssi;
     }
 
     public void setRssi(double rssi) {
@@ -44,20 +46,15 @@ public class Dispositivo implements Serializable {
         return latitud;
     }
 
-    public double getLongitud() {
-        return longitud;
-    }
-
     public void setLatitud(double latitud) {
         this.latitud = latitud;
     }
 
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
+    public double getLongitud() {
+        return longitud;
     }
 
-    @Override
-    public String toString() {
-        return nombre;
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 }
